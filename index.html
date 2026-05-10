@@ -710,7 +710,7 @@
     burst(cx,cy,sparkColor);
     requestAnimationFrame(()=>requestAnimationFrame(()=>{
       circle.classList.add('go');
-      setTimeout(()=>{html.setAttribute('data-theme',nextTheme);try{localStorage.setItem('kn-theme',nextTheme);}catch(e){}},260);
+      setTimeout(()=>{html.setAttribute('data-theme',nextTheme);},260);
       setTimeout(()=>{circle.remove();busy=false;},920);
     }));
   }
@@ -719,7 +719,7 @@
     runThemeTransition(html.getAttribute('data-theme')==='dark'?'light':'dark');
   });
 
-  try{const s=localStorage.getItem('kn-theme');if(s&&s!==html.getAttribute('data-theme'))html.setAttribute('data-theme',s);}catch(e){}
+  /* Always start in dark theme on each page load; user can toggle within session. */
     </script>
 </body>
 </html>
