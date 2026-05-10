@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -719,16 +719,6 @@
     runThemeTransition(html.getAttribute('data-theme')==='dark'?'light':'dark');
   });
 
-  try {
-  const savedTheme = localStorage.getItem('kn-theme');
-
-  if (savedTheme) {
-    html.setAttribute('data-theme', savedTheme);
-  } else {
-    html.setAttribute('data-theme', 'dark');
-  }
-} catch (e) {
-  html.setAttribute('data-theme', 'dark');
-}
+  try{const s=localStorage.getItem('kn-theme');if(s&&s!==html.getAttribute('data-theme'))html.setAttribute('data-theme',s);}catch(e){}
 </body>
 </html>
