@@ -1033,7 +1033,12 @@ content="ConnectChat is a real-time messaging platform built by Karthik Narravul
     runThemeTransition(html.getAttribute('data-theme')==='dark'?'light':'dark');
   });
 
-  try{const s=localStorage.getItem('kn-theme');if(s&&s!==html.getAttribute('data-theme'))html.setAttribute('data-theme',s);}catch(e){}
+  try{
+  const s=localStorage.getItem('kn-theme');
+  if(s === 'dark'){
+    html.setAttribute('data-theme','dark');
+  }
+}catch(e){}
 </script>
 </body>
 </html>
