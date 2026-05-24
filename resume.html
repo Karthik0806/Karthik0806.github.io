@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Résumé — Karthik Narravula</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --amber: #c8933a;
+      --amber-light: #e8b060;
+      --amber-dim: #7a5520;
+      --trans: 0.5s;
+    }
+
+    [data-theme="dark"] {
+      --bg:          #0d0c0a;
+      --bg2:         #111009;
+      --surface:     #181610;
+      --surface2:    #201e16;
+      --cream:       #f0e8d8;
+      --cream-dim:   #a89880;
+      --text:        #e8dfd0;
+      --text-muted:  #6b6358;
+      --border:      #2a2620;
+      --border-warm: #3a3228;
+      --nav-bg:      rgba(13,12,10,0.92);
+    }
+
+    [data-theme="light"] {
+      --bg:          #f7f3ec;
+      --bg2:         #f0ebe1;
+      --surface:     #ede7db;
+      --surface2:    #e6dfd1;
+      --cream:       #1a1710;
+      --cream-dim:   #5a5248;
+      --text:        #2a2520;
+      --text-muted:  #9a9088;
+      --border:      #d8d0c0;
+      --border-warm: #c8c0b0;
+      --nav-bg:      rgba(247,243,236,0.92);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+      transition: background var(--trans), color var(--trans);
+    }
+
+    /* CURSOR */
+    .cursor { position:fixed;top:0;left:0;width:10px;height:10px;background:var(--amber);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s; }
+    .cursor-ring { position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid rgba(200,147,58,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s; }
+    body:has(a:hover) .cursor, body:has(button:hover) .cursor { width:16px;height:16px;background:var(--amber-light); }
+    body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width:52px;height:52px;border-color:rgba(200,147,58,.75); }
+
+    /* NOISE */
+    body::before { content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");background-repeat:repeat;background-size:200px;pointer-events:none;z-index:9997;opacity:.45; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      padding: 24px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: border-color .4s, background .4s, padding .4s;
+    }
+    nav.scrolled { border-color: var(--border); background: var(--nav-bg); backdrop-filter: blur(20px); padding: 16px 48px; }
+    .nav-logo { font-family:'Syne',sans-serif;font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);text-decoration:none; }
+    .nav-right { display:flex;align-items:center;gap:24px; }
+    .nav-back { font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color .25s;display:flex;align-items:center;gap:8px; }
+    .nav-back:hover { color: var(--cream); }
+    .nav-back svg { width:12px;height:12px; }
+
+    /* THEME TOGGLE */
+    .theme-toggle { position:relative;width:58px;height:30px;background:none;border:none;padding:0;cursor:pointer;flex-shrink:0; }
+    .t-track { width:58px;height:30px;border-radius:15px;background:var(--surface2);border:1px solid var(--border-warm);position:relative;overflow:hidden;transition:background var(--trans),border-color var(--trans); }
+    [data-theme="light"] .t-track { background:#ddd5c4;border-color:var(--amber-dim); }
+    .t-star { position:absolute;border-radius:50%;background:var(--amber-light);transition:opacity .4s; }
+    [data-theme="dark"] .t-star { opacity:.75; }
+    [data-theme="light"] .t-star { opacity:0; }
+    .t-star:nth-child(1){width:2px;height:2px;top:7px;left:36px}
+    .t-star:nth-child(2){width:3px;height:3px;top:16px;left:42px}
+    .t-star:nth-child(3){width:2px;height:2px;top:10px;left:48px}
+    .t-cloud { position:absolute;border-radius:50%;background:#c8b89a;transition:opacity .4s; }
+    [data-theme="light"] .t-cloud { opacity:.55; }
+    [data-theme="dark"] .t-cloud { opacity:0; }
+    .t-cloud:nth-child(4){width:8px;height:5px;border-radius:4px;top:8px;left:8px}
+    .t-cloud:nth-child(5){width:5px;height:4px;border-radius:3px;top:16px;left:12px}
+    .t-thumb { position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--amber);transition:transform .48s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(200,147,58,.5); }
+    [data-theme="light"] .t-thumb { transform:translateX(28px);box-shadow:0 2px 14px rgba(200,147,58,.65); }
+    .t-thumb svg { position:absolute;width:12px;height:12px;fill:#0d0c0a;transition:opacity .3s,transform .4s; }
+    .icon-moon { opacity:1; }
+    .icon-sun { opacity:0;transform:rotate(-60deg) scale(.4); }
+    [data-theme="light"] .icon-moon { opacity:0;transform:rotate(60deg) scale(.4); }
+    [data-theme="light"] .icon-sun { opacity:1;transform:rotate(0deg) scale(1); }
+
+    /* MAIN */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 140px 48px 100px;
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 64px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp .8s .2s forwards;
+    }
+    .page-header-left {}
+    .page-tag { font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+    .page-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 7vw, 80px); font-weight: 300; color: var(--cream); line-height: .95; letter-spacing: -.02em; }
+    .page-name em { font-style: italic; color: var(--amber-light); }
+    .page-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+    .contact-item { font-size: 10px; letter-spacing: .08em; color: var(--text-muted); text-align: right; }
+    .contact-item a { color: var(--text-muted); text-decoration: none; transition: color .2s; }
+    .contact-item a:hover { color: var(--amber); }
+
+    /* DOWNLOAD BTN */
+    .dl-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 24px;
+      font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid var(--border-warm); color: var(--cream);
+      transition: color .3s, border-color .3s; position: relative; overflow: hidden; margin-top: 14px;
+    }
+    .dl-btn::before { content:'';position:absolute;inset:0;background:var(--amber);transform:translateX(-101%);transition:transform .35s cubic-bezier(.4,0,.2,1); }
+    .dl-btn span { position:relative;z-index:1; display:flex;align-items:center;gap:8px; }
+    .dl-btn:hover::before { transform:translateX(0); }
+    .dl-btn:hover { color: var(--bg); border-color: var(--amber); }
+
+    /* RESUME BLOCKS */
+    .resume-section {
+      margin-bottom: 56px;
+      opacity: 0; transform: translateY(24px);
+    }
+    .resume-section.visible { animation: fadeUp .7s forwards; }
+
+    .rs-header {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 28px;
+    }
+    .rs-num { font-size: 9px; letter-spacing: .2em; color: var(--amber); flex-shrink: 0; }
+    .rs-title { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--cream); }
+    .rs-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* SKILLS */
+    .skills-groups { display: flex; flex-direction: column; gap: 14px; }
+    .skill-row { display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .skill-row:first-child { border-top: 1px solid var(--border); }
+    .skill-label { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: var(--text-muted); }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--amber-dim); border: 1px solid var(--border-warm); padding: 4px 9px; transition: color .2s, border-color .2s; }
+    .pill:hover { color: var(--amber); border-color: var(--amber-dim); }
+
+    /* PROJECTS */
+    .project-block {
+      border: 1px solid var(--border);
+      padding: 32px 28px;
+      margin-bottom: 2px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+    .project-block::after { content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(to right,var(--amber-dim),var(--amber));transition:width .5s; }
+    .project-block:hover { border-color: var(--border-warm); }
+    .project-block:hover::after { width: 100%; }
+    .proj-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 20px; }
+    .proj-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--cream); }
+    .proj-link { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: var(--amber-dim); text-decoration: none; border: 1px solid var(--amber-dim); padding: 5px 10px; white-space: nowrap; transition: color .2s, border-color .2s, background .2s; }
+    .proj-link:hover { color: var(--bg); background: var(--amber); border-color: var(--amber); }
+    .proj-stack { font-size: 10px; color: var(--text-muted); letter-spacing: .06em; margin-bottom: 18px; font-style: italic; }
+    .proj-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .proj-bullets li { font-size: 11px; line-height: 1.75; color: var(--text); padding-left: 18px; position: relative; letter-spacing: .02em; }
+    .proj-bullets li::before { content: '◆'; position: absolute; left: 0; font-size: 6px; color: var(--amber); top: 5px; }
+
+    /* EDUCATION / CERTS */
+    .edu-block { border-top: 1px solid var(--border); padding: 20px 0; display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 12px; }
+    .edu-block:last-child { border-bottom: 1px solid var(--border); }
+    .edu-school { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--cream); margin-bottom: 4px; }
+    .edu-degree { font-size: 10px; letter-spacing: .08em; color: var(--text-muted); }
+    .edu-year { font-size: 10px; letter-spacing: .12em; color: var(--amber); }
+
+    .cert-block { border-top: 1px solid var(--border); padding: 16px 0; display: flex; justify-content: space-between; align-items: center; }
+    .cert-block:last-child { border-bottom: 1px solid var(--border); }
+    .cert-name { font-size: 12px; color: var(--text); letter-spacing: .04em; }
+    .cert-issuer { font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: var(--amber-dim); }
+
+    /* FOOTER */
+    .resume-footer {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      letter-spacing: .12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .resume-footer a { color: var(--amber-dim); text-decoration: none; transition: color .2s; }
+    .resume-footer a:hover { color: var(--amber); }
+
+    @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      nav.scrolled { padding: 14px 24px; }
+      main { padding: 120px 24px 80px; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 28px; }
+      .page-header-right { align-items: flex-start; }
+      .contact-item { text-align: left; }
+      .skill-row { grid-template-columns: 1fr; gap: 8px; }
+      .proj-top { flex-direction: column; gap: 10px; }
+      .resume-footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="./index.html" class="nav-logo">KN</a>
+  <div class="nav-right">
+    <a href="./index.html" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <div class="t-track">
+        <div class="t-star"></div><div class="t-star"></div><div class="t-star"></div>
+        <div class="t-cloud"></div><div class="t-cloud"></div>
+        <div class="t-thumb">
+          <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="#0d0c0a" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="#0d0c0a" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="#0d0c0a" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="#0d0c0a" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="#0d0c0a" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="#0d0c0a" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="#0d0c0a" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="#0d0c0a" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="page-header-left">
+      <div class="page-tag">Résumé — 2025</div>
+      <h1 class="page-name">Karthik<br><em>Narravula</em></h1>
+    </div>
+    <div class="page-header-right">
+      <div class="contact-item">+91 95029 51059</div>
+      <div class="contact-item"><a href="mailto:nm6773083@gmail.com">nm6773083@gmail.com</a></div>
+      <div class="contact-item"><a href="https://linkedin.com/in/karthik-narravula" target="_blank" rel="noopener">linkedin.com/in/karthik-narravula</a></div>
+      <div class="contact-item"><a href="https://github.com/Karthik0806" target="_blank" rel="noopener">github.com/Karthik0806</a></div>
+      <div class="contact-item"><a href="https://karthiknarravula.dev" target="_blank" rel="noopener">karthiknarravula.dev</a></div>
+      <a href="./KARTHIK_NARRAVULA_Resume.docx" download class="dl-btn">
+        <span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download .docx
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <!-- SKILLS -->
+  <section class="resume-section" data-delay="0">
+    <div class="rs-header">
+      <span class="rs-num">01</span>
+      <span class="rs-title">Technical Skills</span>
+      <div class="rs-line"></div>
+    </div>
+    <div class="skills-groups">
+      <div class="skill-row">
+        <span class="skill-label">Languages</span>
+        <div class="skill-pills">
+          <span class="pill">Java</span>
+          <span class="pill">C++</span>
+          <span class="pill">Python</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">Backend</span>
+        <div class="skill-pills">
+          <span class="pill">Spring Boot</span>
+          <span class="pill">Spring Security</span>
+          <span class="pill">Spring Data JPA</span>
+          <span class="pill">REST APIs</span>
+          <span class="pill">WebSocket</span>
+          <span class="pill">STOMP</span>
+          <span class="pill">Hibernate</span>
+          <span class="pill">JWT</span>
+          <span class="pill">OAuth2</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">Databases</span>
+        <div class="skill-pills">
+          <span class="pill">PostgreSQL</span>
+          <span class="pill">Redis</span>
+          <span class="pill">MongoDB</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">Cloud & DevOps</span>
+        <div class="skill-pills">
+          <span class="pill">AWS EC2</span>
+          <span class="pill">AWS RDS</span>
+          <span class="pill">AWS S3</span>
+          <span class="pill">Docker</span>
+          <span class="pill">Nginx</span>
+          <span class="pill">GitHub Actions</span>
+          <span class="pill">CI/CD</span>
+        </div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-label">Core CS</span>
+        <div class="skill-pills">
+          <span class="pill">DSA</span>
+          <span class="pill">OOP</span>
+          <span class="pill">DBMS</span>
+          <span class="pill">OS</span>
+          <span class="pill">Computer Networks</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="resume-section" data-delay="100">
+    <div class="rs-header">
+      <span class="rs-num">02</span>
+      <span class="rs-title">Projects</span>
+      <div class="rs-line"></div>
+    </div>
+
+    <div class="project-block">
+      <div class="proj-top">
+        <div class="proj-title">ConnectChat</div>
+        <a href="https://chat.karthiknarravula.dev" target="_blank" rel="noopener" class="proj-link">Live Demo ↗</a>
+      </div>
+      <div class="proj-stack">Java · Spring Boot · WebSocket · STOMP · PostgreSQL · Redis · Docker · AWS</div>
+      <ul class="proj-bullets">
+        <li>Engineered a real-time messaging platform supporting private conversations, user search, and full chat history; deployed at scale on AWS EC2 + RDS.</li>
+        <li>Reduced message delivery latency by replacing HTTP polling with persistent WebSocket + STOMP connections, achieving sub-100ms round-trip times.</li>
+        <li>Implemented a stateless JWT authentication system with access/refresh token rotation and Spring Security filter chains, securing both REST APIs and WebSocket session upgrades.</li>
+        <li>Built online presence tracking and read-receipt synchronization by hooking into WebSocket session lifecycle events, delivering real-time status updates across all connected clients.</li>
+        <li>Designed a normalized PostgreSQL schema with Hibernate/JPA, applying lazy loading and query-level indexing to eliminate N+1 patterns.</li>
+        <li>Containerized with Docker and automated the full build-push-deploy pipeline via GitHub Actions CI/CD; configured Nginx as a reverse proxy with HTTPS termination.</li>
+      </ul>
+    </div>
+
+    <div class="project-block">
+      <div class="proj-top">
+        <div class="proj-title">knurls.me</div>
+        <a href="https://knurls.me" target="_blank" rel="noopener" class="proj-link">Live Demo ↗</a>
+      </div>
+      <div class="proj-stack">Java · Spring Boot · PostgreSQL · Redis · React · JWT · OAuth2 · AWS · Nginx</div>
+      <ul class="proj-bullets">
+        <li>Architected a full-stack URL shortening service with authenticated link management, click analytics, custom aliases, and configurable TTL-based link expiration.</li>
+        <li>Implemented Base62 encoding for collision-resistant short-code generation with HTTP 302 redirects and sub-millisecond Redis cache hits.</li>
+        <li>Built a Redis-backed rate limiter using atomic increment operations with sliding expiration windows, enforcing 50 req/min per IP against DDoS.</li>
+        <li>Designed a click analytics engine capturing timestamps, browser/device type, referrer, and IP-based geolocation with paginated retrieval via indexed PostgreSQL queries.</li>
+        <li>Integrated Google OAuth2 alongside JWT access/refresh token flow with BCrypt password hashing and role-based access control (USER/ADMIN).</li>
+        <li>Deployed on AWS EC2 behind Nginx with TLS termination; isolated PostgreSQL and Redis in a private VPC following security best practices.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="resume-section" data-delay="200">
+    <div class="rs-header">
+      <span class="rs-num">03</span>
+      <span class="rs-title">Education</span>
+      <div class="rs-line"></div>
+    </div>
+    <div class="edu-block">
+      <div>
+        <div class="edu-school">Takshashila University</div>
+        <div class="edu-degree">B.Tech in Computer Science &amp; Engineering</div>
+      </div>
+      <div class="edu-year">2023 – 2027</div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section class="resume-section" data-delay="300">
+    <div class="rs-header">
+      <span class="rs-num">04</span>
+      <span class="rs-title">Certifications</span>
+      <div class="rs-line"></div>
+    </div>
+    <div class="cert-block">
+      <span class="cert-name">AWS Cloud Practitioner</span>
+      <span class="cert-issuer">GeeksforGeeks</span>
+    </div>
+    <div class="cert-block">
+      <span class="cert-name">Full Stack Web Development</span>
+      <span class="cert-issuer">Amazon</span>
+    </div>
+    <div class="cert-block">
+      <span class="cert-name">Introduction to Software Development</span>
+      <span class="cert-issuer">Amazon</span>
+    </div>
+  </section>
+
+  <footer class="resume-footer">
+    <span>Karthik Narravula — 2025</span>
+    <a href="https://karthiknarravula.dev">karthiknarravula.dev</a>
+  </footer>
+
+</main>
+
+<script>
+  /* CURSOR */
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function loop(){
+    cursor.style.left=mx+'px';cursor.style.top=my+'px';
+    rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+  if('ontouchstart' in window){cursor.style.display='none';ring.style.display='none';}
+
+  /* NAV SCROLL */
+  window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40));
+
+  /* REVEAL */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const delay = e.target.dataset.delay || 0;
+        e.target.style.animationDelay = delay + 'ms';
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: .1 });
+  document.querySelectorAll('.resume-section').forEach(el => obs.observe(el));
+
+  /* THEME TOGGLE */
+  const html = document.documentElement;
+  const toggleBtn = document.getElementById('themeToggle');
+  toggleBtn.addEventListener('click', () => {
+    html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>
